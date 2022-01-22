@@ -1,12 +1,13 @@
 <template>
   <div>
     <h1>Press Request Button To Initiate Request</h1>
-    <button @click="makeReq($event, url)">Send Req</button>
+    <button @click="makeReq(url)">Send Req</button>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import { mapActions } from "vuex";
 
 export default {
   name: "Requester",
@@ -14,12 +15,12 @@ export default {
     url: "https://jsonplaceholder.typicode.com/todos",
   }),
   methods: {
-    makeReq: function ($event, url) {
-      console.log($event);
+    ...mapActions(["updateListData"]),
+    makeReq: function (url) {
       axios
         .get(url)
         .then((Response) => {
-          this.$emit("responseData", Response.data);
+          this.updateListData(Response.data);
         })
         .catch((e) => {
           console.warn(e);

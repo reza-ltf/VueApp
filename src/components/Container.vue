@@ -1,10 +1,12 @@
 <template>
   <div>
-    <Requester @responseData="updateResponse" />
+    <Requester />
     <hr />
-    <div v-if="response.length">
+    <div>
       <h3>Result:</h3>
-      <Result v-for="item in response" :key="item.userId" :data="item" />
+      <div v-if="getListData">
+        <Result v-for="item in getListData" :key="item.id" :result="item" />
+      </div>
     </div>
   </div>
 </template>
@@ -12,20 +14,19 @@
 <script>
 import Requester from "./Requester.vue";
 import Result from "./Result.vue";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Container",
   data: () => ({
-    response: [],
+    list: null,
   }),
   components: {
     Requester,
     Result,
   },
-  methods: {
-    updateResponse: function (data) {
-      this.response = data;
-    },
+  computed: {
+    ...mapGetters(["getListData"]),
   },
 };
 </script>
